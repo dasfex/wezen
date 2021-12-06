@@ -1,4 +1,4 @@
-# calcom
+# wezen
 Small header-only library for compile time computing and some traits.
 I try to not repeat STL but in some places I am.
 
