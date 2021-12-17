@@ -1,6 +1,6 @@
-#ifndef CALCOM_MATH_HPP
-#define CALCOM_MATH_HPP
+#ifndef WEZEN_MATH_HPP
+#define WEZEN_MATH_HPP
 
 #include "minmax.hpp"
 
-#endif //CALCOM_MATH_HPP
+#endif // WEZEN_MATH_HPP

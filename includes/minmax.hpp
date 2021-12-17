@@ -1,9 +1,9 @@
-#ifndef CALCOM_MINMAX_HPP
-#define CALCOM_MINMAX_HPP
+#ifndef WEZEN_MINMAX_HPP
+#define WEZEN_MINMAX_HPP
 
 #include <type_traits>
 
-namespace calcom {
+namespace wezen {
 
 template <class T, T Head, T... Tail>
 struct min_type {
@@ -57,6 +57,6 @@ struct umax : max_type<size_t, Tail...> {};
 template <size_t... Tail>
 constexpr size_t umax_v = umax<Tail...>::value;
 
-} // calcom
+} // wezen
 
-#endif //CALCOM_MINMAX_HPP
+#endif // WEZEN_MINMAX_HPP

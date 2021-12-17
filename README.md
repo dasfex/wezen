@@ -1,15 +1,17 @@
 # calcom
 Small header-only library for compile time computing and some traits.
+I try to not repeat STL but in some places I am.
 
 ### Support different math functions
-+ ```Min/Max```
++ ```min/max```
 ```cpp
-calcom::min<2, 3>::value; // 2, Min for int
-calcom::min_v<2, 3>; // alias for ::value
-calcom::max_type_v<int64_t, 2, 3>; // 3, you can specify type explicitly
-calcom::max<1, 3, -123, -12, 223>; // or use for any count
+wezen::min<2, 3, -1>::value; // min for int
+wezen::min_v<2, 3, -1>; // alias for ::value
+wezen::max_type_v<int64_t, 2, 3>; // you can specify type explicitly
 ```
 
 ### Tests
-
 In ```tests.cpp``` you can find tests and use it as examples.
+
+### Naming
+Library is named as [Wezen](https://en.wikipedia.org/wiki/Delta_Canis_Majoris).

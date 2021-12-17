@@ -1,6 +1,6 @@
-#include "calcom.hpp"
+#include "wezen.hpp"
 
-using namespace calcom;
+using namespace wezen;
 
 int main() {
     // Min
