@@ -6,4 +6,4 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DTEST")
 
 add_executable(wezen playground.cpp wezen.hpp
-        includes/math/basics.hpp includes/math.hpp includes/math/fib.hpp)
+        includes/math/math_basics.hpp includes/math.hpp includes/math/fib.hpp includes/traits/traits_basics.hpp includes/traits.hpp)

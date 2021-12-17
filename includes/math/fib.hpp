@@ -5,7 +5,7 @@
 
 namespace wezen {
 
-namespace {
+namespace details {
 
 template <size_t M, size_t a, size_t b, size_t c, size_t d>
 struct matrix {
@@ -54,11 +54,11 @@ struct fibonacci_<1, M> {
     static constexpr matrix<M, 1, 1, 1, 0> value{};
 };
 
-} // namespace
+} // namespace details
 
 template <size_t N, size_t M = std::numeric_limits<size_t>::max()>
 struct fibonacci {
-    static constexpr auto value = decltype(fibonacci_<N, M>::value)::m12;
+    static constexpr auto value = decltype(details::fibonacci_<N, M>::value)::m12;
 };
 
 template <size_t N, size_t M = std::numeric_limits<size_t>::max()>
