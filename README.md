@@ -1,5 +1,5 @@
 # calcom
-Small library for compile time computing and some traits.
+Small header-only library for compile time computing and some traits.
 
 ### Support different math functions
 + ```Min/Max```
