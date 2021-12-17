@@ -3,5 +3,7 @@ project(wezen)
 
 set(CMAKE_CXX_STANDARD 17)
 
-add_executable(wezen tests.cpp wezen.hpp
-        includes/minmax.hpp includes/math.hpp)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DTEST")
+
+add_executable(wezen playground.cpp wezen.hpp
+        includes/math/basics.hpp includes/math.hpp includes/math/fib.hpp)
