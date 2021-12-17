@@ -5,47 +5,57 @@
 
 namespace calcom {
 
-template <class T, T lhs, T rhs, class = std::void_t<decltype(std::declval<T>() < std::declval<T>())>>
-struct MinT {
+template <class T, T Head, T... Tail>
+struct min_type {
+    static constexpr T value = min_type<T, Head, min_type<T, Tail...>::value>::value;
+};
+
+template <class T, T lhs, T rhs>
+struct min_type<T, lhs, rhs> {
     static constexpr T value = lhs < rhs ? lhs : rhs;
 };
 
-template <class T, T lhs, T rhs>
-constexpr T MinTV = MinT<T, lhs, rhs>::value;
+template <class T, T... Tail>
+constexpr T min_type_v = min_type<T, Tail...>::value;
 
-template <int lhs, int rhs>
-struct Min : MinT<int, lhs, rhs> {};
+template <int... Tail>
+struct min : min_type<int, Tail...> {};
 
-template <int lhs, int rhs>
-constexpr int MinV = Min<lhs, rhs>::value;
+template <int... Tail>
+constexpr int min_v = min<Tail...>::value;
 
-template <size_t lhs, size_t rhs>
-struct MinU : MinT<size_t, lhs, rhs> {};
+template <size_t... Tail>
+struct umin : min_type<size_t, Tail...> {};
 
-template <size_t lhs, size_t rhs>
-constexpr size_t MinUV = MinU<lhs, rhs>::value;
+template <size_t... Tail>
+constexpr size_t umin_v = umin<Tail...>::value;
 
 
 
-template <class T, T lhs, T rhs, class = std::void_t<decltype(std::declval<T>() < std::declval<T>())>>
-struct MaxT {
-    static constexpr T value = lhs < rhs ? rhs : lhs;
+template <class T, T Head, T... Tail>
+struct max_type {
+    static constexpr T value = max_type<T, Head, max_type<T, Tail...>::value>::value;
 };
 
 template <class T, T lhs, T rhs>
-constexpr T MaxTV = MaxT<T, lhs, rhs>::value;
+struct max_type<T, lhs, rhs> {
+    static constexpr T value = lhs < rhs ? rhs : lhs;
+};
 
-template <int lhs, int rhs>
-struct Max : MaxT<int, lhs, rhs> {};
+template <class T, T... Tail>
+constexpr T max_type_v = max_type<T, Tail...>::value;
 
-template <int lhs, int rhs>
-constexpr int MaxV = Max<lhs, rhs>::value;
+template <int... Tail>
+struct max : max_type<int, Tail...> {};
 
-template <size_t lhs, size_t rhs>
-struct MaxU : MaxT<size_t, lhs, rhs> {};
+template <int... Tail>
+constexpr int max_v = max<Tail...>::value;
 
-template <size_t lhs, size_t rhs>
-constexpr size_t MaxUV = MaxU<lhs, rhs>::value;
+template <size_t... Tail>
+struct umax : max_type<size_t, Tail...> {};
+
+template <size_t... Tail>
+constexpr size_t umax_v = umax<Tail...>::value;
 
 } // calcom
 
