@@ -35,7 +35,8 @@ wezen::condition_v<3 == 2, 221, 229>; // 229
 ```
 
 2. More complex functions.
-+[Fibonacci numbers](
+
++ [Fibonacci numbers](
 https://github.com/dasfex/wezen/blob/trunk/includes/math/fib.hpp
 ) - sequence 1 1 2 3 5 8 ... .
 
