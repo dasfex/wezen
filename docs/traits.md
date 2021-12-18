@@ -7,6 +7,10 @@ wezen::rank<int>::value; // 0
 wezen::rank_v<int[]>; // 1
 wezen::rank_v<int[10][2][12]>; // 3
 ```
+
+Next traits is generated with macroses. 
+Do not forget use ```;```.
+
 + ```HAS_METHOD``` - macros(sorry) for generating code 
 for checking method availability.
 ```cpp
@@ -14,7 +18,7 @@ struct TestClass {
     void foo(int, double) {}
 }; 
 
-HAS_METHOD(foo); // do not forget ;
+HAS_METHOD(foo);
 
 // can I call foo on object of TestClass type with int double args?
 // remember about type conversions
@@ -32,9 +36,9 @@ struct TestClass {
 
 // name and operator
 // x + x
-HAS_OPERATOR(plus, +); // do not forget ;
+HAS_OPERATOR(plus, +);
 // x - x
-HAS_OPERATOR(minus, -); // do not forget ;
+HAS_OPERATOR(minus, -);
 
 // can I call operator on two objects of TestClass type?
 has_plus_v<TestClass>; // true
