@@ -49,7 +49,7 @@ https://github.com/dasfex/wezen/blob/trunk/includes/math/fib.hpp
 Computed in ```size_t```. You can specify modulo ```M```.
 Asymptotic is O(log N). 
 ```cpp
-fibonacci<1>::value;
-fibonacci_v<14>;
-fibonacci_v<1000000000, 1000000007>;
+wezen::fibonacci<1>::value;
+wezen::fibonacci_v<14>;
+wezen::fibonacci_v<1000000000, 1000000007>;
 ```
