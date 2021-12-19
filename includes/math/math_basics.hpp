@@ -2,6 +2,9 @@
 #define WEZEN_MATH_BASICS_HPP
 
 #include <type_traits>
+#include <numeric>
+
+#include <iostream>
 
 namespace wezen {
 
@@ -139,6 +142,35 @@ struct condition : condition_type<Condition, int, a, b> {};
 template <bool Condition, int a, int b>
 constexpr inline int condition_v = condition<Condition, a, b>::value;
 
+template <class T, T a, size_t N, T M = std::numeric_limits<T>::max()>
+struct pow_type {
+    static constexpr T value = [] {
+        if constexpr (N == 1) {
+            return a;
+        } else if constexpr (N % 2 == 1) {
+            return a * pow_type<T, a, N - 1, M>::value % M;
+        } else {
+            T x = pow_type<T, a, N / 2, M>::value;
+            return x * x % M;
+        }
+    }();
+};
+
+template <class T, T a, size_t N, T M = std::numeric_limits<T>::max()>
+constexpr inline T pow_type_v = pow_type<T, a, N, M>::value;
+
+template <int a, size_t N, int M = std::numeric_limits<int>::max()>
+struct pow : pow_type<int, a, N, M> {};
+
+template <int a, size_t N, int M = std::numeric_limits<int>::max()>
+constexpr inline int pow_v = pow<a, N, M>::value;
+
+template <size_t a, size_t N, size_t M = std::numeric_limits<size_t>::max()>
+struct upow : pow_type<size_t, a, N, M> {};
+
+template <size_t a, size_t N, size_t M = std::numeric_limits<size_t>::max()>
+constexpr inline size_t upow_v = upow<a, N, M>::value;
+
 #ifdef TEST
 /// abs
 static_assert(abs_type_v<int, -2> == 2);
@@ -165,6 +197,10 @@ static_assert(ulcm_v<2, 2> == 2);
 static_assert(condition_v<true, 6, 3> == 6);
 static_assert(condition_v<false, 6, 3> == 3);
 static_assert(condition_v<3 == 2, 221, 229> == 229);
+/// pow
+static_assert(pow_v<2, 3> == 8);
+static_assert(pow_v<2, 3, 7> == 1);
+static_assert(upow_v<3, 1000000000, 19> == 16);
 #endif
 
 } // namespace wezen

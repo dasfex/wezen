@@ -33,6 +33,12 @@ wezen::condition_v<true, 6, 3>; // 6
 wezen::condition_type_v<false, size_t, 6, 3>; // 3
 wezen::condition_v<3 == 2, 221, 229>; // 229
 ```
++ ```pow``` - binary pow for a^b mod M.
+```cpp
+wezen::pow_type_v<int, 2, 3>; // 2^3
+wezen::pow_v<2, 3, 7>; // 2^3 % 7
+wezen::upow_v<3, 1000000000, 19>; // 3^1e9 % 19 
+```
 
 2. More complex functions.
 

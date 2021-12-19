@@ -2,9 +2,7 @@
 #define WEZEN_TRAITS_BASICS_HPP
 
 #ifdef TEST
-namespace std {
-    class string;
-}
+#include <string>
 #endif
 
 namespace wezen {
