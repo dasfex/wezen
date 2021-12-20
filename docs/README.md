@@ -5,7 +5,7 @@ Signature scheme(in pseudocode):
 ```cpp
 template <args> func_name -> return_type;
 ```
-if result is value of type ```return_type``` or
+if result is ```value``` of type ```return_type``` or
 ```cpp
 template <args> func_name -> using type;
 ```
