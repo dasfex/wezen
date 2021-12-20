@@ -80,9 +80,7 @@ static_assert(rank_v<int[10][2][12]> == 3);
 struct TestClass {
     void foo(int, double) {}
 
-    TestClass operator+(const TestClass& rhs) {
-        return *this;
-    }
+    void operator+(const TestClass&) {}
 
     void operator++() {}
 };
