@@ -5,6 +5,11 @@ Signature scheme(in pseudocode):
 ```cpp
 template <args> func_name -> return_type;
 ```
+if result is value of type ```return_type``` or
+```cpp
+template <args> func_name -> using type;
+```
+if result is type(for type traits).
 
 1. [Math](https://github.com/dasfex/wezen/blob/trunk/docs/math.md).
 
