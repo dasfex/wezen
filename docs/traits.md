@@ -2,6 +2,15 @@
 
 1. [Basic traits](https://github.com/dasfex/wezen/blob/trunk/includes/traits/traits_basics.hpp).
 + ```rank``` - return dimension count.
+
+Signature:
+```cpp
+template <class T> rank -> size_t;
+template <class T[]> rank -> size_t;
+template <class T[N]> rank -> size_t;
+```
+
+Example:
 ```cpp
 wezen::rank<int>::value; // 0
 wezen::rank_v<int[]>; // 1
@@ -17,6 +26,17 @@ namespace.
 
 + ```HAS_METHOD``` - macros(sorry) for generating code 
 for checking method availability.
+
+Signature
+```cpp
+HAS_METHOD(NAME);
+```
+generates
+```cpp
+template <T, T... Args> has_##NAME -> typename type;
+```
+
+Example:
 ```cpp
 struct TestClass {
     void foo(int, double) {}
@@ -33,6 +53,17 @@ wezen::has_foo_v<TestClass, std::string>; // false
 ```
 + ```HAS_OPERATOR``` - macros for generating code 
 for checking binary operator availability.
+
+Signature
+```cpp
+HAS_OPERATOR(NAME, OP);
+```
+generates
+```cpp
+template <T> has_##NAME -> typename type;
+```
+
+Example:
 ```cpp
 struct TestClass {
     TestClass operator+(const TestClass& rhs) {
@@ -54,6 +85,17 @@ wezen::has_minus_v<TestClass>; // false
 ```
 + ```HAS_UNARY_OPERATOR``` - macros for generating code 
 for checking unary operator availability.
+
+Signature
+```cpp
+HAS_UNARY_OPERATOR(NAME, OP);
+```
+generates
+```cpp
+template <T> has_##NAME -> typename type;
+```
+
+Example:
 ```cpp
 struct TestClass {
     void operator++() {}

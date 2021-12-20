@@ -142,6 +142,12 @@ struct condition : condition_type<Condition, int, a, b> {};
 template <bool Condition, int a, int b>
 constexpr inline int condition_v = condition<Condition, a, b>::value;
 
+template <bool Condition, size_t a, size_t b>
+struct ucondition : condition_type<Condition, size_t, a, b> {};
+
+template <bool Condition, size_t a, size_t b>
+constexpr inline int ucondition_v = condition<Condition, a, b>::value;
+
 template <class T, T a, size_t N, T M = std::numeric_limits<T>::max()>
 struct pow_type {
     static constexpr T value = [] {

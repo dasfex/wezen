@@ -1,6 +1,11 @@
 # Docs
 Main documentation of Wezen.
 
+Signature scheme(in pseudocode):
+```cpp
+template <args> func_name -> return_type;
+```
+
 1. [Math](https://github.com/dasfex/wezen/blob/trunk/docs/math.md).
 
 Simple and not mathematical functions: 

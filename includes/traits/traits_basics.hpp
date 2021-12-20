@@ -26,48 +26,48 @@ template <class T>
 constexpr inline auto rank_v = rank<T>::value;
 
 #define HAS_METHOD(NAME) \
-template <typename T, typename... Args> \
+template <class T, class... Args> \
 struct has_##NAME { \
  private: \
-  template <typename TT, typename... Aargs, \
-        typename = decltype(std::declval<TT>().NAME(std::declval<Aargs>()...))> \
+  template <class TT, class... Aargs, \
+        class = decltype(std::declval<TT>().NAME(std::declval<Aargs>()...))> \
   static std::true_type f(int); \
-  template <typename...> \
+  template <class...> \
   static std::false_type f(...); \
  public: \
   using type = decltype(f<T, Args...>(0)); \
 }; \
-template <typename T, typename... Args> \
+template <class T, class... Args> \
 constexpr inline bool has_##NAME##_v = std::is_same_v<typename has_##NAME<T, Args...>::type, std::true_type>
 
 #define HAS_OPERATOR(NAME, OP) \
-template <typename T> \
+template <class T> \
 struct has_##NAME { \
  private: \
-  template <typename TT, \
-        typename = decltype(std::declval<TT>() OP std::declval<TT>())> \
+  template <class TT, \
+        class = decltype(std::declval<TT>() OP std::declval<TT>())> \
   static std::true_type f(int); \
-  template <typename...> \
+  template <class...> \
   static std::false_type f(...); \
  public: \
   using type = decltype(f<T>(0)); \
 }; \
-template <typename T> \
+template <class T> \
 constexpr inline bool has_##NAME##_v = std::is_same_v<typename has_##NAME<T>::type, std::true_type>
 
 #define HAS_UNARY_OPERATOR(NAME, OP) \
-template <typename T> \
+template <class T> \
 struct has_##NAME { \
  private: \
-  template <typename TT, \
-        typename = decltype(OP std::declval<TT>())> \
+  template <class TT, \
+        class = decltype(OP std::declval<TT>())> \
   static std::true_type f(int); \
-  template <typename...> \
+  template <class...> \
   static std::false_type f(...); \
  public: \
   using type = decltype(f<T>(0)); \
 }; \
-template <typename T> \
+template <class T> \
 constexpr inline bool has_##NAME##_v = std::is_same_v<typename has_##NAME<T>::type, std::true_type>
 
 #ifdef TEST
