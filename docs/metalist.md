@@ -30,7 +30,7 @@ typename wezen::metalist<1, 2, -1, 4>::template tail<>; // metalist<2, -1, 4>
 
 There is some disadvantage of how ```tail``` is invoked but 
 this is because we want to decrease compilation time and 
-instantiate tail only is you use it.
+instantiate tail only if you use it.
 You can make ```using``` for better experience.
 
 + ```get```
