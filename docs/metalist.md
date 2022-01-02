@@ -28,7 +28,7 @@ wezen::metalist<1, 2, -1, 4>::head; // 1
 typename wezen::metalist<1, 2, -1, 4>::template tail<>; // metalist<2, -1, 4>
 ```
 
-There is some disadvantage of how ```tail``` is called but 
+There is some disadvantage of how ```tail``` is invoked but 
 this is because we want to decrease compilation time and 
 instantiate tail only is you use it.
 You can make ```using``` for better experience.
