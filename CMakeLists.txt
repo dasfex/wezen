@@ -35,4 +35,4 @@ add_executable(wezen playground.cpp wezen.hpp
         includes/traits/traits_basics.hpp
         includes/traits.hpp
         includes/metalist/metalist_basics.hpp
-        includes/metalist.hpp includes/metalist/utils.hpp)
+        includes/metalist.hpp)

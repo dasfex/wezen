@@ -23,7 +23,7 @@ Different traits:
 ```rank```, ```HAS_METHOD```/```HAS_OPERATOR```/```HAS_UNARY_OPERATOR```, 
 ```is_one_of```.
 
-3. [Metalist]().
+3. [Metalist](https://github.com/dasfex/wezen/blob/trunk/docs/metalist.md).
 
 Metalist for compile-time storing values and helpers for it:
-```metalist_type```, ```decompose_type```.
+```metalist_type```.
