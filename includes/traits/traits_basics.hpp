@@ -70,6 +70,29 @@ struct has_##NAME { \
 template <class T> \
 constexpr inline bool has_##NAME##_v = std::is_same_v<typename has_##NAME<T>::type, std::true_type>
 
+template <class T, class... Tail>
+struct is_one_of {
+    static constexpr bool value = is_one_of<T, Tail...>::value;
+};
+
+template <class T, class U, class... Tail>
+struct is_one_of<T, U, Tail...> {
+    static constexpr bool value = is_one_of<T, Tail...>::value;
+};
+
+template <class T, class... Tail>
+struct is_one_of<T, T, Tail...> {
+    static constexpr bool value = true;
+};
+
+template <class T>
+struct is_one_of<T> {
+    static constexpr bool value = false;
+};
+
+template <class T, class... Tail>
+constexpr inline bool is_one_of_v = is_one_of<T, Tail...>::value;
+
 #ifdef TEST
 /// rank
 static_assert(rank_v<int> == 0);
@@ -101,6 +124,13 @@ HAS_UNARY_OPERATOR(pref_minus, --);
 
 static_assert(has_pref_plus_v<TestClass>);
 static_assert(!has_pref_minus_v<TestClass>);
+
+/// is_one_of
+static_assert(!is_one_of_v<int, double, float>);
+static_assert(is_one_of_v<int, double, int, float>);
+static_assert(!is_one_of_v<int>);
+static_assert(is_one_of_v<int, int>);
+static_assert(!is_one_of_v<int, float>);
 #endif
 
 } // namespace wezen

@@ -5,7 +5,7 @@
 
 Signature:
 ```cpp
-template <class T> rank -> size_t;
+template <class T> rank -> 0;
 template <class T[]> rank -> size_t;
 template <class T[N]> rank -> size_t;
 ```
@@ -110,4 +110,23 @@ HAS_UNARY_OPERATOR(pref_minus, --);
 
 wezen::has_pref_plus_v<TestClass>; // true
 wezen::has_pref_minus_v<TestClass>; // false
+```
+
++ ```is_one_of``` - checks is type ```T``` inside list of types.
+
+Signature:
+```cpp
+template <class T, class... Tail> is_one_of -> bool;
+template <class T, class T, class... Tail> is_one_of -> true;
+template <class T, class U, class... Tail> is_one_of -> bool;
+template <class T> is_one_of -> false;
+```
+
+Example:
+```cpp
+wezen::is_one_of_v<int, double, float>; // false
+wezen::is_one_of_v<int, double, int, float>; // true
+wezen::is_one_of<int>::value; // false
+wezen::is_one_of_v<int, int>; // true
+wezen::is_one_of_v<int, float>; // false
 ```

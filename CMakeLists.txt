@@ -12,16 +12,12 @@ add_compile_options(
         -Wextra
         -Wpedantic
 
-        -Wcast-align
-        -Wcast-qual
         -Wconversion
-        -Wctor-dtor-privacy
-        -Wenum-compare
-        -Wfloat-equal
         -Wold-style-cast
         -Wredundant-decls
         -Wsign-conversion
-        -Wsign-promo
+
+        -fno-exceptions
 )
 
 if(NOT CMAKE_CXX_EXTENSIONS)
@@ -37,4 +33,6 @@ add_executable(wezen playground.cpp wezen.hpp
         includes/math.hpp
         includes/math/fib.hpp
         includes/traits/traits_basics.hpp
-        includes/traits.hpp)
+        includes/traits.hpp
+        includes/metalist/metalist_basics.hpp
+        includes/metalist.hpp includes/metalist/utils.hpp)
