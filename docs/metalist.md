@@ -80,3 +80,25 @@ wezen::find<1, wezen::metalist<1, 2, 3>>::value; // 0
 wezen::find_v<3, wezen::metalist<1, 2, 3>>; // 2
 wezen::find_v<4, wezen::metalist<1, 2, 3>>; // 3
 ```
+
++ ```find_if``` - return position of the first element in ```metalist``` which satisfy to ```Predicate``` 
+or size of there is no such elements.
+
+Signatures:
+```cpp
+template <Metalist, template <typename Metalist::type> class Predicate> find_if -> size_t;
+```
+I.e. type of metalist elements and predicate should be the same.
+Examples:
+```cpp
+template <int x>
+struct is_even {
+    static constexpr bool value = x % 2 == 0;
+};
+template <int x>
+struct only_false {
+    static constexpr bool value = false;
+};
+find_if<metalist<1, 3, 5, 6, 7>, is_even>::value; // 3
+find_if_v<metalist<1, 3, 5, 6, 7>, only_false>; // 5
+```

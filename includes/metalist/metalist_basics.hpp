@@ -128,6 +128,26 @@ struct find_type_impl {
     }();
 };
 
+template <class Metalist, template <typename Metalist::type> class Predicate,  size_t Size = Metalist::size>
+struct find_if_impl {
+    static constexpr size_t value = [] {
+        if constexpr (Metalist::size > 0) {
+            if constexpr (Predicate<Metalist::head>::value) {
+                return 0;
+            } else {
+                constexpr auto result = find_if_impl<typename Metalist::template tail<>, Predicate, Size>::value;
+                if constexpr (result == Size) {
+                    return result;
+                } else {
+                    return result + 1;
+                }
+            }
+        } else {
+            return Size;
+        }
+    }();
+};
+
 } // namespace details
 
 template <class T, T Finded, class Metalist>
@@ -145,6 +165,14 @@ struct find {
 
 template <int Finded, class Metalist>
 constexpr inline auto find_v = find<Finded, Metalist>::value;
+
+template <class Metalist, template <typename Metalist::type> class Predicate>
+struct find_if {
+    static constexpr auto value = details::find_if_impl<Metalist, Predicate, Metalist::size>::value;
+};
+
+template <class Metalist, template <typename Metalist::type> class Predicate>
+constexpr inline auto find_if_v = find_if<Metalist, Predicate>::value;
 
 #ifdef TEST
 /// decompose_type
@@ -177,6 +205,18 @@ static_assert(find_type_v<int, 2, metalist<1, 2, 3>> == 1);
 static_assert(find<1, metalist<1, 2, 3>>::value == 0);
 static_assert(find_v<3, metalist<1, 2, 3>> == 2);
 static_assert(find_v<4, metalist<1, 2, 3>> == 3);
+
+/// find_if
+template <int x>
+struct is_even {
+    static constexpr bool value = x % 2 == 0;
+};
+template <int x>
+struct only_false {
+    static constexpr bool value = false;
+};
+static_assert(find_if<metalist<1, 3, 5, 6, 7>, is_even>::value == 3);
+static_assert(find_if_v<metalist<1, 3, 5, 6, 7>, only_false> == 5);
 #endif
 
 } // namespace wezen
