@@ -34,6 +34,7 @@ struct decompose {
 template <class T, T... List>
 struct metalist_type {
     using type = T;
+    using common = metalist_type;
     static constexpr size_t size = sizeof...(List);
     static constexpr T head = details::decompose_type<T, List...>::head;
 
@@ -44,12 +45,14 @@ struct metalist_type {
 template <class T>
 struct metalist_type<T> {
     using type = T;
+    using common = metalist_type;
     static constexpr size_t size = 0;
 };
 
 template <int... List>
 struct metalist {
     using type = int;
+    using common = metalist;
     static constexpr size_t size = sizeof...(List);
     static constexpr int head = details::decompose<List...>::head;
 
@@ -60,6 +63,7 @@ struct metalist {
 template <>
 struct metalist<> {
     using type = int;
+    using common = metalist;
     static constexpr size_t size = 0;
 };
 
