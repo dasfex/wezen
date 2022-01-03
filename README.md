@@ -36,5 +36,5 @@ template <int x>
 struct is_even {
     static constexpr bool value = x % 2 == 0;
 };
-find_if<metalist<1, 3, 5, 6, 7>, is_even>::value; // 3
+find_if_v<metalist<1, 3, 5, 6, 7>, is_even>; // 3
 ```
