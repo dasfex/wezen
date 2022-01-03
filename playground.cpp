@@ -1,3 +1,5 @@
+#include <iostream>
+
 #include "wezen.hpp"
 
 using namespace wezen;
