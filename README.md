@@ -18,7 +18,15 @@ Library is named as [Wezen](https://en.wikipedia.org/wiki/Delta_Canis_Majoris).
 + ```pow```
 ```cpp
 // 3^1e9 % 19; asymptotics is O(log N)
-wezen::upow_v<3, 1000000000, 19>; 
+wezen::pow_v<int, 3, 1000000000, 19>; 
+```
+
++ ```is_sqr```
+```cpp
+wezen::is_sqr_v<1>; // true
+wezen::is_sqr_v<225>; // true
+wezen::is_sqr_v<2>; // false
+wezen::is_sqr_v<17>; // false
 ```
 
 + ```fibonacci```
@@ -29,12 +37,17 @@ wezen::fibonacci_v<1000000000, 1000000007>;
 
 + ```metalist``` and different functions
 ```cpp
-wezen::get_v<3, wezen::metalist<0, 1, 2, 3, 4>>; // 3
-wezen::contains_v<4, wezen::metalist<1, 2, 3, 4, 5>>; // true
+wezen::get_v<3, wezen::metalist<int, 0, 1, 2, 3, 4>>; // 3
+wezen::contains_v<int, 4, 
+    wezen::metalist<int, 1, 2, 3, 4, 5>>; // true
 
 template <int x>
 struct is_even {
     static constexpr bool value = x % 2 == 0;
 };
-find_if_v<metalist<1, 3, 5, 6, 7>, is_even>; // 3
+wezen::find_if_v<
+    wezen::metalist<int, 1, 3, 5, 6, 7>, is_even>; // 3
+
+using tail = wezen::get_tail_t<
+    wezen::metalist<int, 1, 2, 3>>; // wezen::metalist<int, 2, 3>
 ```
