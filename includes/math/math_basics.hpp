@@ -9,79 +9,49 @@
 namespace wezen {
 
 template <class T, T a>
-struct abs_type {
+struct abs {
     static constexpr T value = a >= 0 ? a : -a;
 };
 
 template <class T, T a>
-constexpr inline T abs_type_v = abs_type<T, a>::value;
-
-template <int a>
-struct abs : abs_type<int, a> {};
-
-template <int a>
-constexpr inline int abs_v = abs<a>::value;
+constexpr inline T abs_v = abs<T, a>::value;
 
 template <class T, T Head, T... Tail>
-struct min_type {
-    static constexpr T value = min_type<T, Head, min_type<T, Tail...>::value>::value;
+struct min {
+    static constexpr T value = min<T, Head, min<T, Tail...>::value>::value;
 };
 
 template <class T, T lhs, T rhs>
-struct min_type<T, lhs, rhs> {
+struct min<T, lhs, rhs> {
     static constexpr T value = lhs < rhs ? lhs : rhs;
 };
 
 template <class T, T... Tail>
-constexpr inline T min_type_v = min_type<T, Tail...>::value;
-
-template <int... Tail>
-struct min : min_type<int, Tail...> {};
-
-template <int... Tail>
-constexpr inline int min_v = min<Tail...>::value;
-
-template <size_t... Tail>
-struct umin : min_type<size_t, Tail...> {};
-
-template <size_t... Tail>
-constexpr inline size_t umin_v = umin<Tail...>::value;
+constexpr inline T min_v = min<T, Tail...>::value;
 
 template <class T, T Head, T... Tail>
-struct max_type {
-    static constexpr T value = max_type<T, Head, max_type<T, Tail...>::value>::value;
+struct max {
+    static constexpr T value = max<T, Head, max<T, Tail...>::value>::value;
 };
 
 template <class T, T lhs, T rhs>
-struct max_type<T, lhs, rhs> {
+struct max<T, lhs, rhs> {
     static constexpr T value = lhs < rhs ? rhs : lhs;
 };
 
 template <class T, T... Tail>
-constexpr inline T max_type_v = max_type<T, Tail...>::value;
-
-template <int... Tail>
-struct max : max_type<int, Tail...> {};
-
-template <int... Tail>
-constexpr inline int max_v = max<Tail...>::value;
-
-template <size_t... Tail>
-struct umax : max_type<size_t, Tail...> {};
-
-template <size_t... Tail>
-constexpr inline size_t umax_v = umax<Tail...>::value;
+constexpr inline T max_v = max<T, Tail...>::value;
 
 template <class T, T Head, T... Tail>
-struct gcd_type {
-    static constexpr T value = gcd_type<T, Head, gcd_type<T, Tail...>::value>::value;
+struct gcd {
+    static constexpr T value = gcd<T, Head, gcd<T, Tail...>::value>::value;
 };
 
 template <class T, T a, T b>
-struct gcd_type<T, a, b> {
+struct gcd<T, a, b> {
     static constexpr T value = [] {
         if constexpr (b > 0) {
-            return gcd_type<T, b, a % b>::value;
+            return gcd<T, b, a % b>::value;
         } else {
             return a;
         }
@@ -89,124 +59,76 @@ struct gcd_type<T, a, b> {
 };
 
 template <class T, T... Tail>
-constexpr inline T gcd_type_v = gcd_type<T, Tail...>::value;
-
-template <int... Tail>
-struct gcd : gcd_type<int, Tail...> {};
-
-template <int... Tail>
-constexpr inline int gcd_v = gcd<Tail...>::value;
-
-template <size_t... Tail>
-struct ugcd : gcd_type<size_t, Tail...> {};
-
-template <size_t... Tail>
-constexpr inline size_t ugcd_v = ugcd<Tail...>::value;
+constexpr inline T gcd_v = gcd<T, Tail...>::value;
 
 template <class T, T Head, T... Tail>
-struct lcm_type {
-    static constexpr T value = lcm_type<T, Head, lcm_type<T, Tail...>::value>::value;
+struct lcm {
+    static constexpr T value = lcm<T, Head, lcm<T, Tail...>::value>::value;
 };
 
 template <class T, T a, T b>
-struct lcm_type<T, a, b> {
-    static constexpr T value = a / gcd_type_v<T, a, b> * b;
+struct lcm<T, a, b> {
+    static constexpr T value = a / gcd_v<T, a, b> * b;
 };
 
 template <class T, T... Tail>
-constexpr inline T lcm_type_v = lcm_type<T, Tail...>::value;
-
-template <int... Tail>
-struct lcm : lcm_type<int, Tail...> {};
-
-template <int... Tail>
-constexpr inline int lcm_v = lcm<Tail...>::value;
-
-template <size_t... Tail>
-struct ulcm : lcm_type<size_t, Tail...> {};
-
-template <size_t... Tail>
-constexpr inline size_t ulcm_v = ulcm<Tail...>::value;
+constexpr inline T lcm_v = lcm<T, Tail...>::value;
 
 template <bool Condition, class T, T a, T b>
-struct condition_type {
+struct condition {
     static constexpr T value = Condition ? a : b;
 };
 
 template <bool Condition, class T, T a, T b>
-constexpr inline T condition_type_v = condition_type<Condition, T, a, b>::value;
-
-template <bool Condition, int a, int b>
-struct condition : condition_type<Condition, int, a, b> {};
-
-template <bool Condition, int a, int b>
-constexpr inline int condition_v = condition<Condition, a, b>::value;
-
-template <bool Condition, size_t a, size_t b>
-struct ucondition : condition_type<Condition, size_t, a, b> {};
-
-template <bool Condition, size_t a, size_t b>
-constexpr inline int ucondition_v = condition<Condition, a, b>::value;
+constexpr inline T condition_v = condition<Condition, T, a, b>::value;
 
 template <class T, T a, size_t N, T M = std::numeric_limits<T>::max()>
-struct pow_type {
+struct pow {
     static constexpr T value = [] {
         if constexpr (N == 1) {
             return a;
         } else if constexpr (N % 2 == 1) {
-            return a * pow_type<T, a, N - 1, M>::value % M;
+            return a * pow<T, a, N - 1, M>::value % M;
         } else {
-            T x = pow_type<T, a, N / 2, M>::value;
+            T x = pow<T, a, N / 2, M>::value;
             return x * x % M;
         }
     }();
 };
 
 template <class T, T a, size_t N, T M = std::numeric_limits<T>::max()>
-constexpr inline T pow_type_v = pow_type<T, a, N, M>::value;
-
-template <int a, size_t N, int M = std::numeric_limits<int>::max()>
-struct pow : pow_type<int, a, N, M> {};
-
-template <int a, size_t N, int M = std::numeric_limits<int>::max()>
-constexpr inline int pow_v = pow<a, N, M>::value;
-
-template <size_t a, size_t N, size_t M = std::numeric_limits<size_t>::max()>
-struct upow : pow_type<size_t, a, N, M> {};
-
-template <size_t a, size_t N, size_t M = std::numeric_limits<size_t>::max()>
-constexpr inline size_t upow_v = upow<a, N, M>::value;
+constexpr inline T pow_v = pow<T, a, N, M>::value;
 
 #ifdef TEST
 /// abs
-static_assert(abs_type_v<int, -2> == 2);
-static_assert(abs_type_v<int, 0> == 0);
-static_assert(abs_type_v<int, 2> == 2);
+static_assert(abs_v<int, -2> == 2);
+static_assert(abs_v<int, 0> == 0);
+static_assert(abs_v<int, 2> == 2);
 /// min
-static_assert(min_v<-1, 2> == -1);
-static_assert(umin_v<228, 3> == 3);
-static_assert(min_v<1, 4, 2341, -31, -17> == -31);
+static_assert(min_v<int, -1, 2> == -1);
+static_assert(min_v<size_t, 228, 3> == 3);
+static_assert(min_v<int, 1, 4, 2341, -31, -17> == -31);
 /// max
-static_assert(max_v<-1, 2> == 2);
-static_assert(umax_v<228, 3> == 228);
-static_assert(max_v<1, 4, 2341, -31, -17> == 2341);
+static_assert(max_v<int, -1, 2> == 2);
+static_assert(max_v<size_t, 228, 3> == 228);
+static_assert(max_v<int, 1, 4, 2341, -31, -17> == 2341);
 /// gcd
-static_assert(gcd_type_v<long long, 8, 16, 32> == 8);
-static_assert(gcd_v<8, 17, 32, 228> == 1);
-static_assert(gcd_v<1024, 1024> == 1024);
-static_assert(ugcd_v<1024, 0> == 1024);
+static_assert(gcd_v<long long, 8, 16, 32> == 8);
+static_assert(gcd_v<int, 8, 17, 32, 228> == 1);
+static_assert(gcd_v<size_t, 1024, 1024> == 1024);
+static_assert(gcd_v<int, 1024, 0> == 1024);
 /// lcm
-static_assert(lcm_type_v<int, 2, 4, 5> == 20);
-static_assert(lcm_v<2, 3, 5> == 30);
-static_assert(ulcm_v<2, 2> == 2);
+static_assert(lcm_v<int, 2, 4, 5> == 20);
+static_assert(lcm_v<int, 2, 3, 5> == 30);
+static_assert(lcm_v<size_t, 2, 2> == 2);
 /// condition
-static_assert(condition_v<true, 6, 3> == 6);
-static_assert(condition_v<false, 6, 3> == 3);
-static_assert(condition_v<3 == 2, 221, 229> == 229);
+static_assert(condition_v<true, int, 6, 3> == 6);
+static_assert(condition_v<false, int, 6, 3> == 3);
+static_assert(condition_v<3 == 2, size_t, 221, 229> == 229);
 /// pow
-static_assert(pow_v<2, 3> == 8);
-static_assert(pow_v<2, 3, 7> == 1);
-static_assert(upow_v<3, 1000000000, 19> == 16);
+static_assert(pow_v<int, 2, 3> == 8);
+static_assert(pow_v<size_t, 2, 3, 7> == 1);
+static_assert(pow_v<size_t, 3, 1000000000, 19> == 16);
 #endif
 
 } // namespace wezen
