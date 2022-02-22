@@ -99,6 +99,37 @@ struct pow {
 template <class T, T a, size_t N, T M = std::numeric_limits<T>::max()>
 constexpr inline T pow_v = pow<T, a, N, M>::value;
 
+namespace details {
+
+using ull = unsigned long long;
+
+template <ull x, ull l, ull r>
+struct is_sqr_impl {
+    static constexpr bool value = [] {
+        if constexpr (r - l == 1) {
+            return false;
+        }
+        constexpr ull mid = (l + r) / 2;
+        if constexpr (mid * mid < x) {
+            return is_sqr_impl<x, mid, r>::value;
+        } else if constexpr (mid * mid > x) {
+            return is_sqr_impl<x, l, mid>::value;
+        } else {
+            return true;
+        }
+    }();
+};
+
+} // namespace details
+
+template <unsigned long long x>
+struct is_sqr {
+    static constexpr bool value = details::is_sqr_impl<x, 1, x>::value;
+};
+
+template <unsigned long long x>
+constexpr bool is_sqr_v = is_sqr<x>::value;
+
 #ifdef TEST
 /// abs
 static_assert(abs_v<int, -2> == 2);
@@ -129,6 +160,13 @@ static_assert(condition_v<3 == 2, size_t, 221, 229> == 229);
 static_assert(pow_v<int, 2, 3> == 8);
 static_assert(pow_v<size_t, 2, 3, 7> == 1);
 static_assert(pow_v<size_t, 3, 1000000000, 19> == 16);
+/// is_sqr
+static_assert(is_sqr_v<1>);
+static_assert(is_sqr_v<4>);
+static_assert(is_sqr_v<225>);
+static_assert(!is_sqr_v<2>);
+static_assert(!is_sqr_v<5>);
+static_assert(!is_sqr_v<17>);
 #endif
 
 } // namespace wezen

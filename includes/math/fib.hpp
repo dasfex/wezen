@@ -1,6 +1,8 @@
 #ifndef WEZEN_FIB_HPP
 #define WEZEN_FIB_HPP
 
+#include "math_basics.hpp"
+
 #include <limits>
 
 namespace wezen {
@@ -64,11 +66,59 @@ struct fibonacci {
 template <size_t N, size_t M = std::numeric_limits<size_t>::max()>
 constexpr inline auto fibonacci_v = fibonacci<N, M>::value;
 
+namespace details {
+
+using ull = unsigned long long;
+
+template <ull x, ull f1, ull f2>
+struct is_fib_gen_impl {
+private:
+    static constexpr ull max_ull_fib = 12200160415121876738ull;
+
+public:
+    static constexpr bool value = [] {
+        if constexpr (x == f1 || x == f2) {
+            return true;
+        } else if constexpr (f1 == max_ull_fib || f2 == max_ull_fib) {
+            return false;
+        } else {
+            return is_fib_gen_impl<x, f1 + f2, f1 + 2 * f2>::value;
+        }
+    }();
+};
+
+} // details
+
+// x is f_n if 5x^2+4 or 5x^2-4 is sqr
+template <unsigned long long x>
+struct is_fib {
+    static constexpr bool value = [] {
+        if constexpr (x <= 1920767766) {
+            constexpr unsigned long long control = 5 * x * x;
+            return is_sqr_v<control + 4> || is_sqr_v<control - 4>;
+        } else {
+            // start generate from f_48 and f_49
+            return details::is_fib_gen_impl<x, 2971215073, 4807526976>::value;
+        }
+    }();
+};
+
+template <unsigned long long x>
+constexpr bool is_fib_v = is_fib<x>::value;
+
 #ifdef TEST
-     static_assert(fibonacci_v<1> == 1);
-     static_assert(fibonacci_v<8> == 21);
-     static_assert(fibonacci_v<8, 11> == 10);
-     static_assert(fibonacci_v<1000000000000000000, 1000000007> == 209783453);
+/// fibonacci
+static_assert(fibonacci_v<1> == 1);
+static_assert(fibonacci_v<8> == 21);
+static_assert(fibonacci_v<8, 11> == 10);
+static_assert(fibonacci_v<1000000000000000000, 1000000007> == 209783453);
+/// is_fib
+static_assert(is_fib_v<3>);
+static_assert(is_fib_v<63245986>);
+static_assert(is_fib_v<2971215073>);
+static_assert(is_fib_v<12200160415121876738ull>); // max fib in ull
+static_assert(!is_fib_v<2971215072>);
+static_assert(!is_fib_v<9>);
 #endif
 
 } // namespace wezen

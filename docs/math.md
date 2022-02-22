@@ -79,6 +79,20 @@ wezen::pow_v<size_t, 2, 3, 7>; // 2^3 % 7
 wezen::upow_v<long long, 3, 1000000000, 19>; // 3^1e9 % 19 
 ```
 
++ ```is_sqr``` - is number a square root.
+Signature:
+```cpp
+template <unsigned long long x> is_sqr -> bool;
+```
+
+Examples:
+```cpp
+wezen::is_sqr_v<1>; // true
+wezen::is_sqr_v<225>; // true
+wezen::is_sqr_v<2>; // false
+wezen::is_sqr_v<17>; // false
+```
+
 2. More complex functions.
 
 + [Fibonacci numbers](
@@ -98,4 +112,21 @@ Example:
 wezen::fibonacci<1>::value;
 wezen::fibonacci_v<14>;
 wezen::fibonacci_v<1000000000, 1000000007>;
+```
+
++ ```is_fib``` - is number a fibonacci number.
+
+Signature:
+```cpp
+template <unsigned long long x> is_fib -> bool;
+```
+Example:
+```cpp
+wezen::is_fib_v<3>; // true
+wezen::is_fib_v<8>; // true
+wezen::is_fib_v<2971215073>; // f_48
+// max fib in ull
+wezen::is_fib_v<12200160415121876738ull>; // true 
+wezen::is_fib_v<2971215072>; // false
+wezen::is_fib_v<9>; // false
 ```
