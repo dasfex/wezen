@@ -130,6 +130,31 @@ struct is_sqr {
 template <unsigned long long x>
 constexpr bool is_sqr_v = is_sqr<x>::value;
 
+namespace details {
+
+
+
+} // namespace details
+
+template <typename T, T l, T r, template <T> typename Predicate>
+struct binary_search {
+    static constexpr T value = [] {
+        if constexpr (r - l == 1) {
+            return r;
+        } else {
+            constexpr T mid = l + (r - l) / 2;
+            if constexpr (Predicate<mid>::value) {
+                return binary_search<T, l, mid, Predicate>::value;
+            } else {
+                return binary_search<T, mid, r, Predicate>::value;
+            }
+        }
+    }();
+};
+
+template <typename T, T l, T r, template <T> typename Predicate>
+constexpr T binary_search_v = binary_search<T, l, r, Predicate>::value;
+
 #ifdef TEST
 /// abs
 static_assert(abs_v<int, -2> == 2);
@@ -167,6 +192,12 @@ static_assert(is_sqr_v<225>);
 static_assert(!is_sqr_v<2>);
 static_assert(!is_sqr_v<5>);
 static_assert(!is_sqr_v<17>);
+/// binary_search
+template <int x>
+struct predicate_less {
+    static constexpr bool value = x > 32;
+};
+static_assert(binary_search_v<int, 1, 100, predicate_less> == 33);
 #endif
 
 } // namespace wezen

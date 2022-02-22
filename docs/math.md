@@ -93,6 +93,24 @@ wezen::is_sqr_v<2>; // false
 wezen::is_sqr_v<17>; // false
 ```
 
++ ```binary_search``` - finds first satisfying for monotonic 
+predicate number on range.
+
+Signature:
+```cpp
+template <typename T, T l, T r, 
+    template <T> typename Predicate> binary_search -> T;
+```
+
+Examples:
+```cpp
+template <int x>
+struct predicate_less {
+    static constexpr bool value = x > 32;
+};
+wezen::binary_search_v<int, 1, 100, predicate_less>; // 33
+```
+
 2. More complex functions.
 
 + [Fibonacci numbers](
