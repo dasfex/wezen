@@ -130,12 +130,6 @@ struct is_sqr {
 template <unsigned long long x>
 constexpr bool is_sqr_v = is_sqr<x>::value;
 
-namespace details {
-
-
-
-} // namespace details
-
 template <typename T, T l, T r, template <T> typename Predicate>
 struct binary_search {
     static constexpr T value = [] {
