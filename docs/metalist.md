@@ -109,3 +109,39 @@ struct only_false {
 find_if<metalist<int, 1, 3, 5, 6, 7>, is_even>::value; // 3
 find_if_v<metalist<int, 1, 3, 5, 6, 7>, only_false>; // 5
 ```
+
++ ```push_front``` - pushes element to the front of ```wezen::metalist```.
+
+Signatures:
+```cpp
+template <
+        typename Metalist, 
+        typename Metalist::type Pushed> push_front -> type;
+```
+
+Examples:
+```cpp
+wezen::push_front_t<
+            wezen::metalist<int, 2, 8>, 2
+        >; // wezen::metalist<int, 2, 2, 8>
+wezen::push_front_t<wezen::metalist<int, 1>, 5>; // wezen::metalist<int, 5, 1>
+wezen::push_front_t<wezen::metalist<int>, 18>; // wezen::metalist<int, 18>
+```
+
++ ```push_back``` - pushes element to the back of ```wezen::metalist```.
+
+Signatures:
+```cpp
+template <
+        typename Metalist, 
+        typename Metalist::type Pushed> push_back -> type;
+```
+
+Examples:
+```cpp
+wezen::push_back_t<
+            wezen::metalist<int, 2, 2>, 8
+        >; // wezen::metalist<int, 2, 2, 8>
+wezen::push_back_t<wezen::metalist<int, 1>, 5>; // wezen::metalist<int, 1, 5>
+wezen::push_back_t<wezen::metalist<int>, 18>; // wezen::metalist<int, 18>
+```

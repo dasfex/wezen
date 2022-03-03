@@ -1,5 +1,5 @@
 # wezen
-Small header-only library for metaprogramming.
+Small header-only library as training in metaprogramming.
 I try to not repeat STL but in some places I am.
 
 ### Docs
@@ -29,10 +29,15 @@ wezen::is_sqr_v<2>; // false
 wezen::is_sqr_v<17>; // false
 ```
 
-+ ```fibonacci```
++ ```fibonacci``` and ```is_fib```
 ```cpp
 // F_{1000000000} % (1e9+7); asymptotics is O(log N)
 wezen::fibonacci_v<1000000000, 1000000007>;
+// is_fib
+wezen::is_fib_v<3>; // true
+wezen::is_fib_v<8>; // true
+wezen::is_fib_v<2971215073>; // f_48
+wezen::is_fib_v<9>; // false
 ```
 
 + ```metalist``` and different functions
@@ -50,4 +55,7 @@ wezen::find_if_v<
 
 using tail = wezen::get_tail_t<
     wezen::metalist<int, 1, 2, 3>>; // wezen::metalist<int, 2, 3>
+    
+using new_list = wezen::push_back_t<
+    wezen::metalist<int, 2, 2>, 8>; // wezen::metalist<int, 2, 2, 8>
 ```
