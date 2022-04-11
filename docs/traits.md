@@ -24,7 +24,7 @@ Macroses are expanded on preprocessing when there is no information
 about namespaces so it is better if you will use it with ```wezen```
 namespace.
 
-+ ```HAS_METHOD``` - macros(sorry) for generating code 
++ ```HAS_METHOD``` - macros (sorry) for generating code 
 for checking method availability.
 
 Signature
@@ -42,9 +42,7 @@ struct TestClass {
     void foo(int, double) {}
 }; 
 
-namespace wezen {
 HAS_METHOD(foo);
-}
 
 // can I call foo on object of TestClass type with int double args?
 // remember about type conversions
@@ -71,13 +69,11 @@ struct TestClass {
     }
 }; 
 
-namespace wezen {
 // name and operator
 // x + x
 HAS_OPERATOR(plus, +);
 // x - x
 HAS_OPERATOR(minus, -);
-}
 
 // can I call operator on two objects of TestClass type?
 wezen::has_plus_v<TestClass>; // true
@@ -101,12 +97,10 @@ struct TestClass {
     void operator++() {}
 };
 
-namespace wezen {
 // check ++x
 HAS_UNARY_OPERATOR(pref_plus, ++);
 // check --x
 HAS_UNARY_OPERATOR(pref_minus, --);
-}
 
 wezen::has_pref_plus_v<TestClass>; // true
 wezen::has_pref_minus_v<TestClass>; // false

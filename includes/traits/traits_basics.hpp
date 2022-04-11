@@ -7,25 +7,26 @@
 
 namespace wezen {
 
-template <class T>
-struct rank {
-    static constexpr size_t value = 0;
-};
+    template<class T>
+    struct rank {
+        static constexpr size_t value = 0;
+    };
 
-template <class T, int N>
-struct rank<T[N]> {
-    static constexpr size_t value = 1 + rank<T>::value;
-};
+    template<class T, int N>
+    struct rank<T[N]> {
+        static constexpr size_t value = 1 + rank<T>::value;
+    };
 
-template <class T>
-struct rank<T[]> {
-    static constexpr size_t value = 1 + rank<T>::value;
-};
+    template<class T>
+    struct rank<T[]> {
+        static constexpr size_t value = 1 + rank<T>::value;
+    };
 
-template <class T>
-constexpr inline auto rank_v = rank<T>::value;
+    template<class T>
+    constexpr inline auto rank_v = rank<T>::value;
 
 #define HAS_METHOD(NAME) \
+namespace wezen { \
 template <class T, class... Args> \
 struct has_##NAME { \
  private: \
@@ -38,9 +39,11 @@ struct has_##NAME { \
   using type = decltype(f<T, Args...>(0)); \
 }; \
 template <class T, class... Args> \
-constexpr inline bool has_##NAME##_v = std::is_same_v<typename has_##NAME<T, Args...>::type, std::true_type>
+constexpr inline bool has_##NAME##_v = std::is_same_v<typename has_##NAME<T, Args...>::type, std::true_type>; \
+} // namespace wezen
 
 #define HAS_OPERATOR(NAME, OP) \
+namespace wezen { \
 template <class T> \
 struct has_##NAME { \
  private: \
@@ -53,9 +56,11 @@ struct has_##NAME { \
   using type = decltype(f<T>(0)); \
 }; \
 template <class T> \
-constexpr inline bool has_##NAME##_v = std::is_same_v<typename has_##NAME<T>::type, std::true_type>
+constexpr inline bool has_##NAME##_v = std::is_same_v<typename has_##NAME<T>::type, std::true_type>; \
+} // namespace wezen
 
 #define HAS_UNARY_OPERATOR(NAME, OP) \
+namespace wezen { \
 template <class T> \
 struct has_##NAME { \
  private: \
@@ -68,7 +73,8 @@ struct has_##NAME { \
   using type = decltype(f<T>(0)); \
 }; \
 template <class T> \
-constexpr inline bool has_##NAME##_v = std::is_same_v<typename has_##NAME<T>::type, std::true_type>
+constexpr inline bool has_##NAME##_v = std::is_same_v<typename has_##NAME<T>::type, std::true_type>; \
+} // namespace wezen
 
 template <class T, class... Tail>
 struct is_one_of {
@@ -110,20 +116,20 @@ struct TestClass {
 
 HAS_METHOD(foo);
 
-static_assert(has_foo_v<TestClass, int, double>);
-static_assert(!has_foo_v<TestClass, int, std::string>);
+static_assert(wezen::has_foo_v<TestClass, int, double>);
+static_assert(!wezen::has_foo_v<TestClass, int, std::string>);
 
 HAS_OPERATOR(plus, +);
 HAS_OPERATOR(minus, -);
 
-static_assert(has_plus_v<TestClass>);
-static_assert(!has_minus_v<TestClass>);
+static_assert(wezen::has_plus_v<TestClass>);
+static_assert(!wezen::has_minus_v<TestClass>);
 
 HAS_UNARY_OPERATOR(pref_plus, ++);
 HAS_UNARY_OPERATOR(pref_minus, --);
 
-static_assert(has_pref_plus_v<TestClass>);
-static_assert(!has_pref_minus_v<TestClass>);
+static_assert(wezen::has_pref_plus_v<TestClass>);
+static_assert(!wezen::has_pref_minus_v<TestClass>);
 
 /// is_one_of
 static_assert(!is_one_of_v<int, double, float>);
