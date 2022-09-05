@@ -124,3 +124,41 @@ wezen::is_one_of<int>::value; // false
 wezen::is_one_of_v<int, int>; // true
 wezen::is_one_of_v<int, float>; // false
 ```
+
++ ```type_identity``` ([cppreference](https://en.cppreference.com/w/cpp/types/type_identity)) -
+custom implementation or from STL if your standard >= C++20.
+
+Signature:
+```cpp
+template <typename T> type_identity -> T;
+```
+
+Example:
+```cpp
+std::is_same_v<wezen::type_identity_t<int>, int>; // true
+std::is_same_v<wezen::type_identity_t<TestClass>, TestClass>; // true
+```
+
++ ```void_t``` - like in C++17 STL but works.
+
+Signature:
+```cpp
+template <typename...> -> void;
+```
+
+Example:
+```cpp
+struct One { int x; };
+struct Two { int y; };
+
+template <typename T, wezen::void_t<decltype(T::x)>* = nullptr>
+void f() {}
+template <typename T, wezen::void_t<decltype(T::y)>* = nullptr>
+void f() {}
+
+void wrapper() {
+    f<One>();
+    f<Two>();
+}
+```
+This example works with ```wezen::void_t``` but not with ```std::void_t```.

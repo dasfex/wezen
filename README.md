@@ -59,3 +59,21 @@ using tail = wezen::get_tail_t<
 using new_list = wezen::push_back_t<
     wezen::metalist<int, 2, 2>, 8>; // wezen::metalist<int, 2, 2, 8>
 ```
+
++ ```void_t``` that really works:
+This example with ```std::void_t``` will fail:
+```cpp
+struct One { int x; };
+struct Two { int y; };
+
+template <typename T, std::void_t<decltype(T::x)>* = nullptr>
+void f() {}
+template <typename T, std::void_t<decltype(T::y)>* = nullptr>
+void f() {}
+
+int main() {
+  f<One>();
+  f<Two>();
+}
+```
+But if you change ```std::void_t``` to ```wezen::void_t``` it will compile!

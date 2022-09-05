@@ -7,23 +7,23 @@
 
 namespace wezen {
 
-    template<class T>
-    struct rank {
-        static constexpr size_t value = 0;
-    };
+template <typename T>
+struct rank {
+    static constexpr size_t value = 0;
+};
 
-    template<class T, int N>
-    struct rank<T[N]> {
-        static constexpr size_t value = 1 + rank<T>::value;
-    };
+template <typename T, int N>
+struct rank<T[N]> {
+    static constexpr size_t value = 1 + rank<T>::value;
+};
 
-    template<class T>
-    struct rank<T[]> {
-        static constexpr size_t value = 1 + rank<T>::value;
-    };
+template <typename T>
+struct rank<T[]> {
+    static constexpr size_t value = 1 + rank<T>::value;
+};
 
-    template<class T>
-    constexpr inline auto rank_v = rank<T>::value;
+template <typename T>
+constexpr inline auto rank_v = rank<T>::value;
 
 #define HAS_METHOD(NAME) \
 namespace wezen { \
@@ -61,43 +61,71 @@ constexpr inline bool has_##NAME##_v = std::is_same_v<typename has_##NAME<T>::ty
 
 #define HAS_UNARY_OPERATOR(NAME, OP) \
 namespace wezen { \
-template <class T> \
+template <typename T> \
 struct has_##NAME { \
  private: \
-  template <class TT, \
+  template <typename TT, \
         class = decltype(OP std::declval<TT>())> \
   static std::true_type f(int); \
-  template <class...> \
+  template <typename...> \
   static std::false_type f(...); \
  public: \
   using type = decltype(f<T>(0)); \
 }; \
-template <class T> \
+template <typename T> \
 constexpr inline bool has_##NAME##_v = std::is_same_v<typename has_##NAME<T>::type, std::true_type>; \
 } // namespace wezen
 
-template <class T, class... Tail>
+template <typename T, typename... Tail>
 struct is_one_of {
     static constexpr bool value = is_one_of<T, Tail...>::value;
 };
 
-template <class T, class U, class... Tail>
+template <typename T, typename U, typename... Tail>
 struct is_one_of<T, U, Tail...> {
     static constexpr bool value = is_one_of<T, Tail...>::value;
 };
 
-template <class T, class... Tail>
+template <typename T, typename... Tail>
 struct is_one_of<T, T, Tail...> {
     static constexpr bool value = true;
 };
 
-template <class T>
+template <typename T>
 struct is_one_of<T> {
     static constexpr bool value = false;
 };
 
-template <class T, class... Tail>
+template <typename T, typename... Tail>
 constexpr inline bool is_one_of_v = is_one_of<T, Tail...>::value;
+
+#if __cplusplus >= 202002L
+#include <type_traits>
+
+template <typename T>
+struct type_identity : std::type_identity_t<T> {};
+
+template <typename T>
+using type_identity_t = typename std::type_identity_t<T>;
+#else
+template <typename T>
+struct type_identity {
+    using type = T;
+};
+
+template <typename T>
+using type_identity_t = typename type_identity<T>::type;
+#endif  // __cplusplus >= 202002L
+
+namespace details {
+
+template <typename T, typename...>
+struct void_t_impl : type_identity<T> {};
+
+}  // namespace details
+
+template <typename... Args>
+struct void_t : details::void_t_impl<void, Args...> {};
 
 #ifdef TEST
 /// rank
@@ -137,6 +165,24 @@ static_assert(is_one_of_v<int, double, int, float>);
 static_assert(!is_one_of_v<int>);
 static_assert(is_one_of_v<int, int>);
 static_assert(!is_one_of_v<int, float>);
+
+/// type_identity
+static_assert(std::is_same_v<type_identity_t<int>, int>);
+static_assert(std::is_same_v<type_identity_t<TestClass>, TestClass>);
+
+/// void_t; example should compile
+struct One { int x; };
+struct Two { int y; };
+
+template <typename T, void_t<decltype(T::x)>* = nullptr>
+void f() {}
+template <typename T, void_t<decltype(T::y)>* = nullptr>
+void f() {}
+
+void wrapper() {
+    f<One>();
+    f<Two>();
+}
 #endif
 
 } // namespace wezen
