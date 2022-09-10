@@ -162,3 +162,24 @@ void wrapper() {
 }
 ```
 This example works with ```wezen::void_t``` but not with ```std::void_t```.
+
++ ```exclusive_or``` - logical XOR metafunction.
+
+Signature:
+```cpp
+template <typename... Args> exclusive_or -> bool;
+```
+
+Example:
+```cpp
+wezen::exclusive_or_v<std::true_type>; // true
+wezen::exclusive_or_v<std::false_type>; // false
+wezen::exclusive_or_v<std::true_type, std::false_type>; // true
+wezen::exclusive_or_v<std::true_type, std::true_type>; // false
+wezen::exclusive_or_v<std::true_type, std::true_type, std::true_type>; // true
+
+struct MyType {
+    static constexpr bool value = true;
+};
+wezen::exclusive_or_v<MyType, MyType>; // false
+```

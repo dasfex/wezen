@@ -1,9 +1,7 @@
 #ifndef WEZEN_TRAITS_BASICS_HPP
 #define WEZEN_TRAITS_BASICS_HPP
 
-#ifdef TEST
-#include <string>
-#endif
+#include <type_traits>
 
 namespace wezen {
 
@@ -127,6 +125,23 @@ struct void_t_impl : type_identity<T> {};
 template <typename... Args>
 struct void_t : details::void_t_impl<void, Args...> {};
 
+//template <typename... Args>
+//struct exclusive_or : std::true_type {};
+
+template <typename T, typename... Args>
+struct exclusive_or : exclusive_or<T, exclusive_or<Args...>> {};
+
+template <typename T>
+struct exclusive_or<T> : T {};
+
+template <typename T, typename S>
+struct exclusive_or<T, S> {
+    static constexpr bool value = T::value ^ S::value;
+};
+
+template <typename... Args>
+constexpr inline bool exclusive_or_v = exclusive_or<Args...>::value;
+
 #ifdef TEST
 /// rank
 static_assert(rank_v<int> == 0);
@@ -183,6 +198,20 @@ void wrapper() {
     f<One>();
     f<Two>();
 }
+
+/// exclusive_or
+static_assert(exclusive_or_v<std::true_type>);
+static_assert(!exclusive_or_v<std::false_type>);
+static_assert(exclusive_or_v<std::true_type, std::false_type>);
+static_assert(!exclusive_or_v<std::true_type, std::true_type>);
+static_assert(exclusive_or_v<std::true_type, std::true_type, std::true_type>);
+
+struct MyType {
+    static constexpr bool value = true;
+};
+
+static_assert(!exclusive_or_v<MyType, MyType>);
+
 #endif
 
 } // namespace wezen
