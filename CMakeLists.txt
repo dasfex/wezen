@@ -18,6 +18,8 @@ add_compile_options(
         -Wsign-conversion
 
         -fno-exceptions
+
+        -DTEST
 )
 
 if(NOT CMAKE_CXX_EXTENSIONS)
